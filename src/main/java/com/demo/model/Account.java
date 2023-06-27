@@ -13,6 +13,7 @@ public class Account {
     private String password;
     private String name;
     private String age;
+    private String phone;
     private String gender;
     private String image;
     private Boolean status;
@@ -26,7 +27,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(String email, String password, String name, String age, String gender, String image, Boolean status, Location location, Role role) {
+    public Account(String email, String password, String phone, String name, String age, String gender, String image, Boolean status, Location location, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -36,6 +37,23 @@ public class Account {
         this.status = status;
         this.location = location;
         this.role = role;
+        this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Long getId() {
