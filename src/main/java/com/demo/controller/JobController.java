@@ -50,9 +50,12 @@ public class JobController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Job>> searchJobsAndCompanies(@RequestParam(name = "q") String searchTerm) {
-        List<Job> result = jobService.searchJobsAndCompanies(searchTerm);
-        return new ResponseEntity<>(result,HttpStatus.OK);
+    public ResponseEntity<List<Job>> searchJobsAndCompanies(
+            @RequestParam(name = "q",required = false) String searchTerm,
+            @RequestParam(name = "type",required = false) String type,
+            @RequestParam(name = "location",required = false) String location) {
+        List<Job> jobs = jobService.searchJobsAndCompanies(searchTerm, type, location);
+        return ResponseEntity.ok(jobs);
     }
     @PostMapping
     public ResponseEntity<Job> addNewCompany(@RequestBody Job job) {

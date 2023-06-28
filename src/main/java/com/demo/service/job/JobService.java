@@ -2,8 +2,10 @@ package com.demo.service.job;
 
 import com.demo.model.Company;
 import com.demo.model.Job;
+import com.demo.model.Location;
 import com.demo.repository.ICompanyRepository;
 import com.demo.repository.IJobRepository;
+import com.demo.repository.ILocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class JobService implements IJobService{
     private IJobRepository jobRepository;
     @Autowired
     private ICompanyRepository companyRepository;
+    @Autowired
+    private ILocationRepository locationRepository;
 
     @Override
     public Iterable<Job> findAll() {
@@ -49,24 +53,40 @@ public class JobService implements IJobService{
     }
 
     @Override
-    public List<Job> searchJobsAndCompanies(String searchTerm) {
+    public List<Job> searchJobsAndCompanies(String searchTerm, String type, String location) {
         List<Job> result = new ArrayList<>();
 
-        // Search for jobs
-        List<Job> jobs = jobRepository.findByTitleContainingIgnoreCase(searchTerm);
-        for (Job job : jobs) {
-            result.add(job);
+        // Search for jobs by title and job type
+        List<Job> jobsByTitleAndType = jobRepository.findByTitleContainingIgnoreCaseAndJobTypeIgnoreCase(searchTerm, type);
+        result.addAll(jobsByTitleAndType);
+
+        // Search for jobs by job type
+        List<Job> jobsByType = jobRepository.findByJobTypeIgnoreCase(type);
+        for (Job job : jobsByType) {
+            if (!result.contains(job)) {
+                result.add(job);
+            }
         }
 
-        // Search for companies
-        List<Company> companies = companyRepository.findByNameContainingIgnoreCase(searchTerm);
-        for (Company company : companies) {
-            List<Job> companyJobs = jobRepository.findByCompany(company);
-            for (Job job : companyJobs) {
+        // Search for jobs by title or company name
+        List<Job> jobsByTitleOrCompany = jobRepository.findByTitleContainingIgnoreCaseOrCompany_NameContainingIgnoreCase(searchTerm, searchTerm);
+        for (Job job : jobsByTitleOrCompany) {
+            if (!result.contains(job)) {
+                result.add(job);
+            }
+        }
+
+        // Search for jobs by location name
+        List<Job> jobsByLocation = jobRepository.findByJobLocation_NameContainingIgnoreCase(location);
+        for (Job job : jobsByLocation) {
+            if (!result.contains(job)) {
                 result.add(job);
             }
         }
 
         return result;
     }
+
+
+
 }

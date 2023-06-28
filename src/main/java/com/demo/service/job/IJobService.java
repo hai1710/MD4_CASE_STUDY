@@ -6,5 +6,6 @@ import com.demo.service.IGeneralService;
 import java.util.List;
 
 public interface IJobService extends IGeneralService<Job> {
-    List<Job> searchJobsAndCompanies(String searchTerm);
+    List<Job> searchJobsAndCompanies(String searchTerm, String type, String Location);
+
 }

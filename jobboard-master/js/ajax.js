@@ -26,7 +26,7 @@ function showListJob() {
                 <span class="icon-room"></span> ${data[i].job_location.name}, ${data[i].job_region}
               </div>
               <div class="job-listing-meta">
-                <span class="badge badge-danger">${data[i].job_type}</span>
+                <span class="badge badge-danger">${data[i].jobType}</span>
               </div>
             </div>
           </li>`
@@ -38,8 +38,7 @@ function showListJob() {
 
 
 function showListLocation() {
-   let listLocation = `<select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
-                                        data-live-search="true" title="Select Region" >`;
+   let listLocation = ``;
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/location",
