@@ -16,7 +16,7 @@ public class Job {
     private String job_type;
     @ManyToOne
     @JoinColumn(name = "location_id",referencedColumnName = "id")
-    private Location job_Location;
+    private Location job_location;
     private String experience;
     private String employment_status;
     private Date published_on;
@@ -33,12 +33,12 @@ public class Job {
     public Job() {
     }
 
-    public Job(String title, String salary, String image, String job_type, Location job_Location, String experience, String employment_status, Date published_on, Date application_deadline, String description, String vacancy, String gender, String job_region, Boolean status, Company company) {
+    public Job(String title, String salary, String image, String job_type, Location job_location, String experience, String employment_status, Date published_on, Date application_deadline, String description, String vacancy, String gender, String job_region, Boolean status, Company company) {
         this.title = title;
         this.salary = salary;
         this.image = image;
         this.job_type = job_type;
-        this.job_Location = job_Location;
+        this.job_location = job_location;
         this.experience = experience;
         this.employment_status = employment_status;
         this.published_on = published_on;
@@ -91,12 +91,12 @@ public class Job {
         this.job_type = job_type;
     }
 
-    public Location getJob_Location() {
-        return job_Location;
+    public Location getJob_location() {
+        return job_location;
     }
 
-    public void setJob_Location(Location job_Location) {
-        this.job_Location = job_Location;
+    public void setJob_location(Location job_Location) {
+        this.job_location = job_Location;
     }
 
     public String getExperience() {
@@ -178,4 +178,5 @@ public class Job {
     public void setCompany(Company company) {
         this.company = company;
     }
+
 }
