@@ -3,12 +3,14 @@ package com.demo.controller;
 
 import com.demo.model.Job;
 
+import com.demo.service.Company.ICompanyService;
 import com.demo.service.job.IJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class JobController {
     @Autowired
     private IJobService jobService;
+
 
     @GetMapping
     public ResponseEntity<List<Job>> showJobList() {
@@ -45,13 +48,11 @@ public class JobController {
         }
         return new ResponseEntity<>(job.get(), HttpStatus.OK);
     }
+
     @GetMapping("/search")
-    public ResponseEntity<Iterable<Job>> searchJobByTitle(@RequestParam("title") String title){
-        Iterable<Job> jobs = jobService.findByName(title);
-        if(jobs != null){
-            return new ResponseEntity<>(jobs,HttpStatus.OK);
-        }
-        return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<Job>> searchJobsAndCompanies(@RequestParam(name = "q") String searchTerm) {
+        List<Job> result = jobService.searchJobsAndCompanies(searchTerm);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<Job> addNewCompany(@RequestBody Job job) {

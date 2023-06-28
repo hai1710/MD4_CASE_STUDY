@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ICompanyRepository extends JpaRepository<Company,Long> {
-    @Query("SELECT c FROM Company AS c WHERE c.name LIKE %:name%")
-    List<Company> findCompaniesByName(String name);
+    List<Company> findByNameContainingIgnoreCase(String name);
+
 }

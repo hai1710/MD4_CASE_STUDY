@@ -28,7 +28,7 @@ public class CompanyService implements ICompanyService{
 
     @Override
     public Iterable<Company> findByName(String name) {
-        return companyRepository.findCompaniesByName(name);
+        return companyRepository.findByNameContainingIgnoreCase(name);
     }
 
     @Override
