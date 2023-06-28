@@ -9,12 +9,14 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String email;
     private String password;
     private String name;
     private String age;
-    private String phone;
     private String gender;
+    @Column(unique = true)
+    private String phone;
     private String image;
     private Boolean status;
     @ManyToOne
@@ -27,17 +29,23 @@ public class Account {
     public Account() {
     }
 
-    public Account(String email, String password, String phone, String name, String age, String gender, String image, Boolean status, Location location, Role role) {
+    public Account(String email, String password, String phone) {
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+    }
+
+    public Account(String email, String password, String name, String age, String phone, String gender, String image, Boolean status, Location location, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.phone = phone;
         this.image = image;
         this.status = status;
         this.location = location;
         this.role = role;
-        this.phone = phone;
     }
 
     public String getPhone() {

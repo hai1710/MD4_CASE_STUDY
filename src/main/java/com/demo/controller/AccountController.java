@@ -3,11 +3,14 @@ package com.demo.controller;
 import com.demo.model.Account;
 import com.demo.service.Account.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -53,8 +56,15 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping
-    public ResponseEntity<Account> addNewAccount(@RequestBody Account account) {
-        return new ResponseEntity<>(accountService.save(account), HttpStatus.CREATED);
+    public ResponseEntity<?> addNewAccount(@RequestBody Account account) {
+        if (account.getEmail().isEmpty()) {
+            return new ResponseEntity<>(accountService.save(account), HttpStatus.CREATED);
+        }
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("message", "Da ton tai");
+        Map<String, String> messageMap = new HashMap<>();
+        messageMap.put("message", "Da ton tai");
+        return new ResponseEntity<>(messageMap, HttpStatus.OK);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account account){
