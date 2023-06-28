@@ -23,7 +23,7 @@ function showListJob() {
                 <strong>${data[i].company.name}</strong>
               </div>
               <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                <span class="icon-room"></span> ${data[i].job_location.name}, ${data[i].job_region}
+                <span class="icon-room"></span> ${data[i].jobLocation.name}, ${data[i].job_region}
               </div>
               <div class="job-listing-meta">
                 <span class="badge badge-danger">${data[i].jobType}</span>
