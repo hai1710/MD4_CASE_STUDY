@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<input type="file" id="fileInput" onchange="displaySelectedImage()">
+<button onclick="uploadImage()">Tải lên</button>
+
+<!-- Hiển thị ảnh đã chọn -->
+<img id="selectedImage" src="" alt="Selected Image">
+
+<!-- Hiển thị liên kết ảnh sau khi tải lên -->
+<p id="uploadMessage"></p>
+<img id="uploadedImage" src="" alt="Uploaded Image">
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+<script>
+  // Cấu hình Firebase
+  var firebaseConfig = {
+    apiKey: "AIzaSyBoTj1_SNijRYo4DGugLqnCKWOy2pF7hWk",
+    authDomain: "casemd4-3a742.firebaseapp.com",
+    projectId: "casemd4-3a742",
+    storageBucket: "casemd4-3a742.appspot.com",
+    messagingSenderId: "149528641745",
+    appId: "1:149528641745:web:852427a18e21880305c5f0",
+    measurementId: "G-HKY5QFR16C"
+  };
+
+  // Khởi tạo Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Hiển thị ảnh đã chọn khi chọn file
+  function displaySelectedImage() {
+    var fileInput = document.getElementById("fileInput");
+    var file = fileInput.files[0];
+    var selectedImage = document.getElementById("selectedImage");
+
+    if (file) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        selectedImage.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      selectedImage.src = "";
+    }
+  }
+
+  // Tải lên ảnh lên Firebase Storage
+  function uploadImage() {
+    var fileInput = document.getElementById("fileInput");
+    var file = fileInput.files[0];
+
+    if (!file) {
+      console.error("Vui lòng chọn một tệp để tải lên!");
+      return;
+    }
+
+    // Tham chiếu đến Firebase Storage
+    var storageRef = firebase.storage().ref().child('images/' + file.name);
+
+    // Tải lên hình ảnh lên Firebase Storage
+    var uploadTask = storageRef.put(file);
+
+    uploadTask.on(
+            "state_changed",
+            function(snapshot) {
+              // Xử lý tiến trình tải lên
+              var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log("Tiến trình tải lên: " + progress + "%");
+
+              // Cập nhật tiến trình tải lên trên giao diện
+              var selectedImage = document.getElementById("selectedImage");
+              selectedImage.style.opacity = 1 - progress / 100;
+            },
+            function(error) {
+              console.error("Lỗi khi tải lên hình ảnh:", error);
+            },
+            function() {
+              // Hoàn thành tải lên
+              uploadTask.snapshot.ref
+                      .getDownloadURL()
+                      .then(function(downloadURL) {
+                        // Hiển thị liên kết ảnh trên trang web
+                        var uploadedImage = document.getElementById("uploadedImage");
+                        uploadedImage.src = downloadURL;
+
+                        // Hiển thị thông báo thành công và liên kết ảnh
+                        var uploadMessage = document.getElementById("uploadMessage");
+                        uploadMessage.innerHTML = "Hình ảnh đã được tải lên thành công! <br> Liên kết ảnh: <a href='" + downloadURL + "'>" + downloadURL + "</a>";
+                        console.log("Liên kết ảnh:", downloadURL);
+
+                        // Xóa ảnh đã chọn và hiển thị liên kết ảnh
+                        var selectedImage = document.getElementById("selectedImage");
+                        selectedImage.src = "";
+                      })
+                      .catch(function(error) {
+                        console.error("Lỗi khi lấy liên kết ảnh:", error);
+                      });
+            }
+    );
+  }
+
+</script>
+
+</body>
+</html>
