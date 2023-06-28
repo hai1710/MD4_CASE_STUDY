@@ -18,8 +18,8 @@
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="css/style.css">
-    <script src="../src/main/resources/templates/login.js"></script>
-  </head>
+    <script src="login.js"></script>
+    </head>
   <body id="top">
 
   <div id="overlayer"></div>
@@ -144,7 +144,6 @@
               <div style="color: red" id="checkRePassword"></div>
             </div>
             <div style="color: red" id="checkSignup"></div>
-            <div style="color: red" id="checkSignupabc"></div>
             <div class="row form-group">
               <div class="col-md-12">
                 <input type="submit" value="Sign Up" onclick="checkSignup()" class="btn px-4 btn-primary text-white">
@@ -168,9 +167,10 @@
                 <input type="password" id="login-password" class="form-control" placeholder="Password">
               </div>
             </div>
+            <div id="checkLogin"></div>
             <div class="row form-group">
               <div class="col-md-12">
-                <input type="submit" value="Log In" class="btn px-4 btn-primary text-white">
+                <input type="button" value="Log In" onclick="checkLogin()" class="btn px-4 btn-primary text-white">
               </div>
             </div>
 
