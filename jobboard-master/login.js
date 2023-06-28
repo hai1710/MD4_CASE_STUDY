@@ -94,10 +94,7 @@ function checkLogin() {
     console.log(password1)
 
     $.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+
         type: "GET",
         url: "http://localhost:8080/account",
         success: function(data) {
