@@ -1,6 +1,7 @@
 package com.demo.controller;
 
 import com.demo.model.Account;
+import com.demo.model.Role;
 import com.demo.service.Account.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -57,15 +58,21 @@ public class AccountController {
     }
     @PostMapping
     public ResponseEntity<?> addNewAccount(@RequestBody Account account) {
-        if (account.getEmail().isEmpty()) {
-            return new ResponseEntity<>(accountService.save(account), HttpStatus.CREATED);
-        }
-
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("message", "Da ton tai");
+        Iterable<Account> accounts = accountService.findAll();
         Map<String, String> messageMap = new HashMap<>();
-        messageMap.put("message", "Da ton tai");
-        return new ResponseEntity<>(messageMap, HttpStatus.OK);
+        for (Account account1: accounts){
+        if (account.getEmail().equals(account1.getEmail())) {
+            messageMap.put("message", "Email da ton tai");
+            return new ResponseEntity<>(messageMap, HttpStatus.OK);
+        }
+            if (account.getPhone().equals(account1.getPhone())) {
+                messageMap.put("message", "Phone da ton tai");
+                return new ResponseEntity<>(messageMap, HttpStatus.OK);
+            }
+        }
+        messageMap.put("message", "Đăng kí thành công");
+        accountService.save(account);
+        return new ResponseEntity<>(messageMap, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account account){
