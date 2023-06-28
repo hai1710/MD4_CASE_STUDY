@@ -29,10 +29,11 @@ public class Account {
     public Account() {
     }
 
-    public Account(String email, String password, String phone) {
+    public Account(String email, String password, String phone,Role role) {
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.role=role;
     }
 
     public Account(String email, String password, String name, String age, String phone, String gender, String image, Boolean status, Location location, Role role) {

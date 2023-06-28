@@ -3,12 +3,16 @@ function addAccount() {
     let email = $('#signup-email').val();
     let phone = $('#signup-phone').val();
     let password = $('#signup-password').val();
+    let role =  {
+        "id": 1,
+            "name_role": "user"
+    };
     let newAccount = {
         email: email,
         phone: phone,
-        password: password
+        password: password,
+        role: role
     };
-    // goi ajax
     $.ajax({
         headers: {
             'Accept': 'application/json',
@@ -16,12 +20,9 @@ function addAccount() {
         },
         type: "POST",
         data: JSON.stringify(newAccount),
-        //tên API
         url: "http://localhost:8080/account",
-        //xử lý khi thành công
         success: function(result) {
-            console.log(result.message)
-            document.getElementById("checkSignupabc").innerHTML = result.message
+            document.getElementById("checkSignup").innerHTML = result.message
         }
 
     });
@@ -41,6 +42,10 @@ function checkSignup(){
         document.getElementById('checkEmail').innerHTML = mess1;
         isValid=false;
     }
+    if (emailRegex.test(email)) {
+        mess1 = "";
+        document.getElementById('checkEmail').innerHTML = mess1;
+    }
 
     // Kiểm tra định dạng số điện thoại
     let phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
@@ -48,6 +53,10 @@ function checkSignup(){
         mess2 = "Vui lòng nhập số điện thoại hợp lệ.";
         document.getElementById('checkPhone').innerHTML = mess2;
         isValid=false;
+    }
+    if (phoneRegex.test(phone)) {
+        mess2 = "";
+        document.getElementById('checkPhone').innerHTML = mess2;
     }
 
     // Kiểm tra độ dài và định dạng mật khẩu
@@ -57,6 +66,10 @@ function checkSignup(){
         document.getElementById('checkPassword').innerHTML = mess3;
         isValid=false;
     }
+    if (passwordRegex.test(password)) {
+        mess3 = "";
+        document.getElementById('checkPassword').innerHTML = mess3;
+    }
 
     // Kiểm tra xem mật khẩu được nhập lại có khớp với mật khẩu ban đầu không
     if (password != rePassword) {
@@ -64,12 +77,36 @@ function checkSignup(){
         document.getElementById('checkRePassword').innerHTML = mess4;
         isValid=false;
     }
+    if (password == rePassword) {
+        mess4 = "";
+        document.getElementById('checkRePassword').innerHTML = mess4;
+    }
 
     // Nếu tất cả các kiểm tra đều đúng thì cho phép gửi form
     if (isValid) {
-        console.log(isValid)
-        mess = "Đăng kí thành công";
-        document.getElementById('checkSignup').innerHTML = mess;
         addAccount();
     }
+}
+function checkLogin() {
+    let email1 = $('#login-email').val();
+    console.log(email1)
+    let password1 = $('#login-password').val();
+    console.log(password1)
+
+    $.ajax({
+
+        type: "GET",
+        url: "http://localhost:8080/account",
+        success: function(data) {
+            console.log(data)
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].email==email1&&data[i].password==password1){
+                    localStorage.setItem("currentUser", JSON.stringify(data[i]));
+                   window.location.href = "index.html";
+               }
+            }
+            document.getElementById("checkLogin").innerHTML="tai khoan hoac mat khau khong chinh xac"
+        }
+
+    });
 }

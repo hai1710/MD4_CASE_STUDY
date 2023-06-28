@@ -11,5 +11,4 @@ import java.util.List;
 public interface IAccountRepository extends JpaRepository<Account, Long> {
     @Query("SELECT a FROM Account AS a WHERE a.name LIKE %:name%")
     List<Account> findAccountByName(String name);
-    Account findAccountByEmail(String email);
 }
