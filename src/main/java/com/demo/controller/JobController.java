@@ -32,10 +32,10 @@ public class JobController {
     }
 
     @GetMapping("count")
-    public ResponseEntity<Long> countJobs(){
+    public ResponseEntity<Long> countJobs() {
         Long count = jobService.count();
-        if (count != null){
-            return new ResponseEntity<>(count,HttpStatus.OK);
+        if (count != null) {
+            return new ResponseEntity<>(count, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -50,23 +50,21 @@ public class JobController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Job>> searchJobsAndCompanies(
-            @RequestParam(name = "q",required = false) String searchTerm,
-            @RequestParam(name = "type",required = false) String type,
-            @RequestParam(name = "location",required = false) String location) {
-        List<Job> jobs = jobService.searchJobsAndCompanies(searchTerm, type, location);
-        return ResponseEntity.ok(jobs);
-    }
-    @PostMapping
-    public ResponseEntity<Job> addNewCompany(@RequestBody Job job) {
-        return new ResponseEntity<>(jobService.save(job), HttpStatus.CREATED);
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<Job> updateAddress(@PathVariable Long id, @RequestBody Job job){
-        Optional<Job> jobOptional = jobService.findById(id);
-        if (!jobOptional.isPresent()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
-        job.setId(jobOptional.get().getId());
-        return new ResponseEntity<>(jobService.save(job),HttpStatus.OK);
+    public ResponseEntity<List<Job>> searchJobs(@RequestParam(name = "search",required = false) String search, @RequestParam(name = "jobType",required = false) String jobType, @RequestParam(name = "locationId",required = false) Long id) {
+        List<Job> jobs = jobService.searchJobs(search, jobType, id);
+        return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
     }
 }
+//    @PostMapping
+//    public ResponseEntity<Job> addNewCompany(@RequestBody Job job) {
+//        return new ResponseEntity<>(jobService.save(job), HttpStatus.CREATED);
+//    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Job> updateAddress(@PathVariable Long id, @RequestBody Job job){
+//        Optional<Job> jobOptional = jobService.findById(id);
+//        if (!jobOptional.isPresent()){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
+//        job.setId(jobOptional.get().getId());
+//        return new ResponseEntity<>(jobService.save(job),HttpStatus.OK);
+//    }
+
