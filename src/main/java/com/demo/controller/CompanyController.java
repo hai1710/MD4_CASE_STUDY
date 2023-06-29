@@ -17,6 +17,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("company")
 public class CompanyController {
+
+    @Autowired
+    private IAccountService accountService;
     @Autowired
     private ICompanyService companyService;
 
@@ -32,6 +35,16 @@ public class CompanyController {
     @GetMapping("/{id}")
     public ResponseEntity<Company> findCompanyById(@PathVariable Long id) {
         Optional<Company> company = companyService.findById(id);
+        if (!company.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(company.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/account/{id}")
+    public ResponseEntity<Company> findCompanyByAccount(@PathVariable Long id) {
+        Account account = accountService.findById(id).get();
+        Optional<Company> company = companyService.findByAccount(account);
         if (!company.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

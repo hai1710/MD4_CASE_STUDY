@@ -38,3 +38,42 @@ function postEdit() {
         }
     });
 }
+function postCompany() {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    console.log(currentUser)
+
+    // Lấy thông tin hình ảnh sau khi chỉnh sửa
+    let email = $('#Email-name').val();
+    let name =  $('#company-name').val();
+    let link_company = $('#company-website').val();
+    let link_facebook = $('#company-website-fb').val();
+    let phone = $('#company-phone').val();
+    let region = $('#company-region').val();
+    let img = $('#uploadedImage1').attr("src");
+    let id =  $('#accountId').val();
+    let updatedAccount = {
+        id: id,
+        email:email,
+        name: name,
+        link_company: link_company,
+        link_facebook: link_facebook,
+        phone: phone,
+        region:region,
+        image: img,
+        account: currentUser,
+    };
+    console.log(updatedAccount)
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "PUT",
+        data: JSON.stringify(updatedAccount),
+        url: "http://localhost:8080/company/" + id,
+        success: function ( ) {
+            alert("Update success")
+        }
+    });
+}
+

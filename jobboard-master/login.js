@@ -38,7 +38,7 @@ function checkSignup(){
     // Kiểm tra định dạng email
     let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!emailRegex.test(email)) {
-        mess1 = "Vui lòng nhập địa chỉ email hợp lệ.";
+        mess1 = "Please enter a valid email address.";
         document.getElementById('checkEmail').innerHTML = mess1;
         isValid=false;
     }
@@ -50,7 +50,7 @@ function checkSignup(){
     // Kiểm tra định dạng số điện thoại
     let phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
     if (!phoneRegex.test(phone)) {
-        mess2 = "Vui lòng nhập số điện thoại hợp lệ.";
+        mess2 = "Please enter valid phone number.";
         document.getElementById('checkPhone').innerHTML = mess2;
         isValid=false;
     }
@@ -62,7 +62,7 @@ function checkSignup(){
     // Kiểm tra độ dài và định dạng mật khẩu
     let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(password)) {
-        mess3 = "Mật khẩu phải chứa ít nhất 8 ký tự, trong đó có ít nhất một chữ cái viết hoa, một chữ cái thường và một số.";
+        mess3 = "Passwords must contain at least 8 characters, including at least one capital letters, a regular letter and some.";
         document.getElementById('checkPassword').innerHTML = mess3;
         isValid=false;
     }
@@ -73,7 +73,7 @@ function checkSignup(){
 
     // Kiểm tra xem mật khẩu được nhập lại có khớp với mật khẩu ban đầu không
     if (password != rePassword) {
-        mess4 = "Mật khẩu không khớp. Vui lòng nhập lại.";
+        mess4 = "Password incorrect. Please enter again.";
         document.getElementById('checkRePassword').innerHTML = mess4;
         isValid=false;
     }
@@ -104,7 +104,7 @@ function checkLogin() {
                    window.location.href = "index.html";
                }
             }
-            document.getElementById("checkLogin").innerHTML="tai khoan hoac mat khau khong chinh xac"
+            document.getElementById("checkLogin").innerHTML="Accounts or passwords incorrectly."
         }
 
     });
