@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ILocationRepository extends JpaRepository<Location,Long> {
     List<Location> findAllByNameContainingIgnoreCase(String name);
-
+    List<Location> findByNameContaining(String name);
 }

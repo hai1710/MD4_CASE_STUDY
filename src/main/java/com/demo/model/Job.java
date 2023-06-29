@@ -13,12 +13,11 @@ public class Job {
     private String title;
     private String salary;
     private String image;
-    private String job_type;
+    private String jobType;
     @ManyToOne
     @JoinColumn(name = "location_id",referencedColumnName = "id")
-    private Location job_location;
+    private Location jobLocation;
     private String experience;
-    private String employment_status;
     private Date published_on;
     private Date application_deadline;
     private String description;
@@ -33,14 +32,14 @@ public class Job {
     public Job() {
     }
 
-    public Job(String title, String salary, String image, String job_type, Location job_location, String experience, String employment_status, Date published_on, Date application_deadline, String description, String vacancy, String gender, String job_region, Boolean status, Company company) {
+    public Job(String title, String salary, String image, String jobType, Location jobLocation, String experience, Date published_on, Date application_deadline, String description, String vacancy, String gender, String job_region, Boolean status, Company company) {
         this.title = title;
         this.salary = salary;
         this.image = image;
-        this.job_type = job_type;
-        this.job_location = job_location;
+        this.jobType = jobType;
+        this.jobLocation = jobLocation;
         this.experience = experience;
-        this.employment_status = employment_status;
+
         this.published_on = published_on;
         this.application_deadline = application_deadline;
         this.description = description;
@@ -83,20 +82,20 @@ public class Job {
         this.image = image;
     }
 
-    public String getJob_type() {
-        return job_type;
+    public String getJobType() {
+        return jobType;
     }
 
-    public void setJob_type(String job_type) {
-        this.job_type = job_type;
+    public void setJobType(String job_type) {
+        this.jobType = job_type;
     }
 
-    public Location getJob_location() {
-        return job_location;
+    public Location getJobLocation() {
+        return jobLocation;
     }
 
-    public void setJob_location(Location job_Location) {
-        this.job_location = job_Location;
+    public void setJobLocation(Location job_Location) {
+        this.jobLocation = job_Location;
     }
 
     public String getExperience() {
@@ -105,14 +104,6 @@ public class Job {
 
     public void setExperience(String experience) {
         this.experience = experience;
-    }
-
-    public String getEmployment_status() {
-        return employment_status;
-    }
-
-    public void setEmployment_status(String employment_status) {
-        this.employment_status = employment_status;
     }
 
     public Date getPublished_on() {
