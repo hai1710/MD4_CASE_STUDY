@@ -40,7 +40,6 @@ function showListJob() {
 
 function showListLocation() {
    let listLocation = ``;
-   listLocation = `<option></option>`
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/location",

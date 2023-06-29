@@ -15,9 +15,10 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/quill.snow.css">
-    <script src="checkUser.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script src="checkUser.js"></script>
+    <script src="js/post-job.js"></script>
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="css/style.css">    
@@ -139,101 +140,68 @@
           <div class="col-lg-12">
             <form class="p-4 p-md-5 border rounded" method="post">
               <h3 class="text-black mb-5 border-bottom pb-2">Job Details</h3>
-              
-              <div class="form-group">
-                <label for="company-website-tw d-block">Upload Featured Image</label> <br>
-                <label class="btn btn-primary btn-md btn-file">
-                  Browse File<input type="file" hidden>
-                </label>
-              </div>
 
               <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" class="form-control" id="email" placeholder="you@yourdomain.com">
+                <label>Image</label> <br>
+                <label class="btn btn-primary btn-md btn-file">
+                  Browse File<input type="file" id="fileInput" hidden onchange="displaySelectedImage()">
+                </label>
               </div>
+              <img id="selectedImage" alt="Selected Image" style="display: none; max-width: 500px;"><br>
+              <button id="uploadButton" type="button" class="btn btn-primary btn-md btn-file" onclick="uploadImage()" style="display: none">Upload</button>
+              <p id="uploadMessage"></p>
+              <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none; max-width: 500px;">
+
               <div class="form-group">
                 <label for="job-title">Job Title</label>
                 <input type="text" class="form-control" id="job-title" placeholder="Product Designer">
               </div>
-              <div class="form-group">
-                <label for="job-location">Location</label>
-                <input type="text" class="form-control" id="job-location" placeholder="e.g. New York">
-              </div>
 
               <div class="form-group">
-                <label for="job-region">Job Region</label>
-                <select class="selectpicker border rounded" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Region">
-                      <option>Anywhere</option>
-                      <option>San Francisco</option>
-                      <option>Palo Alto</option>
-                      <option>New York</option>
-                      <option>Manhattan</option>
-                      <option>Ontario</option>
-                      <option>Toronto</option>
-                      <option>Kansas</option>
-                      <option>Mountain View</option>
-                    </select>
+                <label >Location</label>
+                <select id="mySelect"></select>
               </div>
 
               <div class="form-group">
                 <label for="job-type">Job Type</label>
-                <select class="selectpicker border rounded" id="job-type" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Job Type">
-                  <option>Part Time</option>
-                  <option>Full Time</option>
-                </select>
+                <input type="text" class="form-control" id="job-type" placeholder="e.g. Full Time">
               </div>
 
+              <div class="form-group">
+                <label for="job-published">Published</label>
+                <input type="text" class="form-control" id="job-published" placeholder="e.g. New York">
+              </div>
 
               <div class="form-group">
-                <label for="job-description">Job Description</label>
+                <label for="job-deadline">Apply Deadline</label>
+                <input type="text" class="form-control" id="job-deadline" placeholder="e.g. New York">
+              </div>
+
+              <div class="form-group">
+                <label for="job-vacancy">Vacancy</label>
+                <input type="text" class="form-control" id="job-vacancy" placeholder="e.g. New York">
+              </div>
+
+              <div class="form-group">
+                <label for="job-experience">Experience</label>
+                <input type="text" class="form-control" id="job-experience" placeholder="e.g. New York">
+              </div>
+
+              <div class="form-group">
+                <label for="job-salary">Salary</label>
+                <input type="text" class="form-control" id="job-salary" placeholder="e.g. New York">
+              </div>
+
+              <div class="form-group">
+                <label for="job-gender">Gender</label>
+                <input type="text" class="form-control" id="job-gender" placeholder="e.g. New York">
+              </div>
+
+              <div class="form-group">
+                <label for="editor-1">Job Description</label>
                 <div class="editor" id="editor-1">
                   <p>Write Job Description!</p>
                 </div>
-              </div>
-
-
-              <h3 class="text-black my-5 border-bottom pb-2">Company Details</h3>
-              <div class="form-group">
-                <label for="company-name">Company Name</label>
-                <input type="text" class="form-control" id="company-name" placeholder="e.g. New York">
-              </div>
-
-              <div class="form-group">
-                <label for="company-tagline">Tagline (Optional)</label>
-                <input type="text" class="form-control" id="company-tagline" placeholder="e.g. New York">
-              </div>
-
-              <div class="form-group">
-                <label for="job-description">Company Description (Optional)</label>
-                <div class="editor" id="editor-2">
-                  <p>Description</p>
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label for="company-website">Website (Optional)</label>
-                <input type="text" class="form-control" id="company-website" placeholder="https://">
-              </div>
-
-              <div class="form-group">
-                <label for="company-website-fb">Facebook Username (Optional)</label>
-                <input type="text" class="form-control" id="company-website-fb" placeholder="companyname">
-              </div>
-
-              <div class="form-group">
-                <label for="company-website-tw">Twitter Username (Optional)</label>
-                <input type="text" class="form-control" id="company-website-tw" placeholder="@companyname">
-              </div>
-              <div class="form-group">
-                <label for="company-website-tw">Linkedin Username (Optional)</label>
-                <input type="text" class="form-control" id="company-website-tw" placeholder="companyname">
-              </div>
-
-              <div class="form-group">
-                <label for="company-website-tw d-block">Upload Logo</label> <br>
-                <label class="btn btn-primary btn-md btn-file">
-                  Browse File<input type="file" hidden>
-                </label>
               </div>
 
             </form>
@@ -249,7 +217,7 @@
                 <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</a>
               </div>
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md">Save Job</a>
+                <button type="button" onclick="postJob()" class="btn btn-block btn-primary btn-md">Save Job</button>
               </div>
             </div>
           </div>
@@ -336,8 +304,102 @@
     <script src="js/bootstrap-select.min.js"></script>
     
     <script src="js/custom.js"></script>
-   
-   
-     
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <script>
+    // Cấu hình Firebase
+    var firebaseConfig = {
+      apiKey: "AIzaSyBoTj1_SNijRYo4DGugLqnCKWOy2pF7hWk",
+      authDomain: "casemd4-3a742.firebaseapp.com",
+      projectId: "casemd4-3a742",
+      storageBucket: "casemd4-3a742.appspot.com",
+      messagingSenderId: "149528641745",
+      appId: "1:149528641745:web:852427a18e21880305c5f0",
+      measurementId: "G-HKY5QFR16C"
+    };
+
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Hiển thị ảnh đã chọn khi chọn file
+    function displaySelectedImage() {
+      var fileInput = document.getElementById("fileInput");
+      var file = fileInput.files[0];
+      var selectedImage = document.getElementById("selectedImage");
+      selectedImage.style.display = "block";
+      document.getElementById("uploadButton").style.display = "block";
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          selectedImage.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        selectedImage.src = "";
+      }
+    }
+
+    // Tải lên ảnh lên Firebase Storage
+    function uploadImage() {
+      var fileInput = document.getElementById("fileInput");
+      var file = fileInput.files[0];
+
+      if (!file) {
+        console.error("Vui lòng chọn một tệp để tải lên!");
+        return;
+      }
+
+      // Tham chiếu đến Firebase Storage
+      var storageRef = firebase.storage().ref().child('images/' + file.name);
+
+      // Tải lên hình ảnh lên Firebase Storage
+      var uploadTask = storageRef.put(file);
+
+      uploadTask.on(
+              "state_changed",
+              function(snapshot) {
+                // Xử lý tiến trình tải lên
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log("Tiến trình tải lên: " + progress + "%");
+
+                // Cập nhật tiến trình tải lên trên giao diện
+                var selectedImage = document.getElementById("selectedImage");
+                selectedImage.style.opacity = 1 - progress / 100;
+              },
+              function(error) {
+                console.error("Lỗi khi tải lên hình ảnh:", error);
+              },
+              function() {
+                // Hoàn thành tải lên
+                uploadTask.snapshot.ref
+                        .getDownloadURL()
+                        .then(function(downloadURL) {
+                          // Hiển thị liên kết ảnh trên trang web
+                          var uploadedImage = document.getElementById("uploadedImage");
+                          uploadedImage.src = downloadURL;
+
+                          // Hiển thị thông báo thành công và liên kết ảnh
+                          var uploadMessage = document.getElementById("uploadMessage");
+                          uploadMessage.innerHTML = "Upload success! <br><a href='" + downloadURL + "'>"+"</a>";
+                          document.getElementById("uploadedImage").style.display = "block";
+
+                          // Xóa ảnh đã chọn và hiển thị liên kết ảnh
+                          var selectedImage = document.getElementById("selectedImage");
+                          selectedImage.src = "";
+                        })
+                        .catch(function(error) {
+                          console.error("Lỗi khi lấy liên kết ảnh:", error);
+                        });
+              }
+      );
+    }
+
+  </script>
+
+
   </body>
 </html>

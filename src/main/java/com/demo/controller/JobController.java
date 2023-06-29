@@ -54,11 +54,13 @@ public class JobController {
         List<Job> jobs = jobService.searchJobs(search, jobType, id);
         return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<Job> addNewCompany(@RequestBody Job job) {
+        return new ResponseEntity<>(jobService.save(job), HttpStatus.CREATED);
+    }
 }
-//    @PostMapping
-//    public ResponseEntity<Job> addNewCompany(@RequestBody Job job) {
-//        return new ResponseEntity<>(jobService.save(job), HttpStatus.CREATED);
-//    }
+
 //    @PutMapping("/{id}")
 //    public ResponseEntity<Job> updateAddress(@PathVariable Long id, @RequestBody Job job){
 //        Optional<Job> jobOptional = jobService.findById(id);
