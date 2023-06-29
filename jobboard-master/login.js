@@ -94,7 +94,6 @@ function checkLogin() {
     console.log(password1)
 
     $.ajax({
-
         type: "GET",
         url: "http://localhost:8080/account",
         success: function(data) {
