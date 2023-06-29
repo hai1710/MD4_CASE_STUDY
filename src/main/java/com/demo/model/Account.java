@@ -29,7 +29,19 @@ public class Account {
     public Account() {
     }
 
-    public Account(String email, String password, String phone,Role role) {
+    public Account(Long id, String email, String password, String name, String age, String gender, String phone, String image, Location location) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.phone = phone;
+        this.image = image;
+        this.location = location;
+    }
+
+    public Account(String email, String password, String phone, Role role) {
         this.email = email;
         this.password = password;
         this.phone = phone;

@@ -6,15 +6,16 @@ import com.demo.model.Location;
 import com.demo.repository.ICompanyRepository;
 import com.demo.repository.IJobRepository;
 import com.demo.repository.ILocationRepository;
+import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.criteria.*;
+import org.hibernate.SharedSessionContract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-public class JobService implements IJobService{
+public class JobService implements IJobService {
     @Autowired
     private IJobRepository jobRepository;
     @Autowired
@@ -52,41 +53,23 @@ public class JobService implements IJobService{
         jobRepository.deleteById(id);
     }
 
-    @Override
-    public List<Job> searchJobsAndCompanies(String searchTerm, String type, String location) {
-        List<Job> result = new ArrayList<>();
-
-        // Search for jobs by title and job type
-        List<Job> jobsByTitleAndType = jobRepository.findByTitleContainingIgnoreCaseAndJobTypeIgnoreCase(searchTerm, type);
-        result.addAll(jobsByTitleAndType);
-
-        // Search for jobs by job type
-        List<Job> jobsByType = jobRepository.findByJobTypeIgnoreCase(type);
-        for (Job job : jobsByType) {
-            if (!result.contains(job)) {
-                result.add(job);
-            }
+    public List<Job> searchJobs(String search, String jobType, Long locationId) {
+        if (search == null && jobType == null && locationId == null) {
+            return jobRepository.findAll();
         }
-
-        // Search for jobs by title or company name
-        List<Job> jobsByTitleOrCompany = jobRepository.findByTitleContainingIgnoreCaseOrCompany_NameContainingIgnoreCase(searchTerm, searchTerm);
-        for (Job job : jobsByTitleOrCompany) {
-            if (!result.contains(job)) {
-                result.add(job);
-            }
+        if (search != null && jobType != null && locationId != null) {
+            return jobRepository.searchJobs(search, jobType, locationId);
         }
-
-        // Search for jobs by location name
-        List<Job> jobsByLocation = jobRepository.findByJobLocation_NameContainingIgnoreCase(location);
-        for (Job job : jobsByLocation) {
-            if (!result.contains(job)) {
-                result.add(job);
-            }
+        if (jobType != null && locationId != null) {
+            return jobRepository.searchJobsByJobType(jobType, locationId);
         }
-
-        return result;
+        if (locationId != null) {
+            return jobRepository.searchJobsByLocationId(locationId);
+        }
+            return jobRepository.findAll();
     }
 
-
-
+//    public List<Job> searchJobs(String title, String jobType, Long locationId) {
+//        return jobRepository.findByTitleContainingIgnoreCaseOrJobTypeIgnoreCaseOrJobLocationId(title, jobType, locationId);
+//    }
 }

@@ -30,6 +30,14 @@ function showJob(jobId) {
             $('#job-location').append(data.jobLocation.name);
             $('#job-salary').append(data.salary);
             $('#job-gender').append(data.gender);
+            $('.title').append(data.title);
+            $('#companyName').append(data.company.name);
+            $('#location').append(data.jobLocation.name);
+            $('#jobtype').append(data.jobType);
+
+            $('#image').attr('src', data.image);
+            $('#image2').attr('src', data.image);
+
         }
     });
 }
