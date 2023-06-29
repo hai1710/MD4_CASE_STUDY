@@ -19,7 +19,6 @@ public class Company {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
     @OneToOne
-    @JsonIgnore
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
     private String link_company;

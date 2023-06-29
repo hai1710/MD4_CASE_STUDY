@@ -1,5 +1,6 @@
 package com.demo.service.Company;
 
+import com.demo.model.Account;
 import com.demo.model.Company;
 import com.demo.repository.ICompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,10 @@ public class CompanyService implements ICompanyService{
     @Override
     public void remove(Long id) {
         companyRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Company> findByAccount(Account account) {
+        return companyRepository.findByAccount(account);
     }
 }

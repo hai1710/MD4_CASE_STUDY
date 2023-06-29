@@ -19,6 +19,7 @@
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <script src="location.js"></script>
 </head>
 <body id="top">
 
@@ -116,26 +117,6 @@
     <section class="site-section">
         <div class="container">
 
-            <div class="row align-items-center mb-5">
-                <div class="col-lg-8 mb-4 mb-lg-0">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <h2>Company</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <a href="#" class="btn btn-block btn-light btn-md"><span
-                                    class="icon-open_in_new mr-2"></span>Preview</a>
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="btn btn-block btn-primary btn-md">Save</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="row mb-5">
                 <div class="col-lg-12">
                     <form class="p-4 p-md-5 border rounded" method="post">
@@ -167,14 +148,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label >Location</label>
-                            <select id="mySelect"></select>
+                            <label for="company-region">Region</label>
+                            <input type="text" class="form-control" id="company-region" placeholder="e.g. Hà Nội">
                         </div>
-                        <div class="form-group">
-                            <label for="company-address">Address</label>
-                            <input type="text" class="form-control" id="company-address" placeholder="e.g. Hà Nội">
+                        <div class="form-group" hidden="hidden">
+                            <label for="accountId">ID</label>
+                            <input type="text" class="form-control" id="accountId" placeholder="e.g. Hà Nội">
                         </div>
-
                         <div class="form-group">
                             <label>Company Description (Optional)</label>
                             <div class="editor" id="editor-2">
@@ -185,13 +165,13 @@
                         <div class="form-group">
                             <label>Upload Logo</label> <br>
                             <label class="btn btn-primary btn-md btn-file">
-                                Browse File<input type="file" id="fileInput" hidden onchange="displaySelectedImage()">
+                                Browse File<input type="file" id="fileInput1" hidden onchange="displaySelectedImage1()">
                             </label>
                         </div>
-                        <img id="selectedImage" alt="Selected Image" style="display: none; max-width: 500px;"><br>
-                        <button id="uploadButton" type="button" class="btn btn-primary btn-md btn-file" onclick="uploadImage()" style="display: none">Upload</button>
-                        <p id="uploadMessage"></p>
-                        <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none; max-width: 500px;">
+                        <img id="selectedImage1" alt="Selected Image" style="max-width: 500px;"><br>
+                        <button id="uploadButton1" type="button" class="btn btn-primary btn-md btn-file" onclick="uploadImage1()" style="display: none">Upload</button>
+                        <p id="uploadMessage1"></p>
+                        <img id="uploadedImage1" src="" alt="Uploaded Image" style="display: none; max-width: 500px;">
 
 
 
@@ -206,11 +186,7 @@
                 <div class="col-lg-4 ml-auto">
                     <div class="row">
                         <div class="col-6">
-                            <a href="#" class="btn btn-block btn-light btn-md"><span
-                                    class="icon-open_in_new mr-2"></span>Preview</a>
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="btn btn-block btn-primary btn-md">Save</a>
+                            <button type="button" class="btn btn-block btn-primary btn-md" onclick="postCompany()">Save</button>
                         </div>
                     </div>
                 </div>
@@ -318,41 +294,41 @@
     firebase.initializeApp(firebaseConfig);
 
     // Hiển thị ảnh đã chọn khi chọn file
-    function displaySelectedImage() {
-        var fileInput = document.getElementById("fileInput");
-        var file = fileInput.files[0];
-        var selectedImage = document.getElementById("selectedImage");
-        selectedImage.style.display = "block";
-        document.getElementById("uploadButton").style.display = "block";
+    function displaySelectedImage1() {
+        var fileInput1 = document.getElementById("fileInput1");
+        var file1 = fileInput1.files[0];
+        var selectedImage1 = document.getElementById("selectedImage1");
+        selectedImage1.style.display = "block";
+        document.getElementById("uploadButton1").style.display = "block";
 
-        if (file) {
-            var reader = new FileReader();
+        if (file1) {
+            let reader = new FileReader();
 
             reader.onload = function(e) {
-                selectedImage.src = e.target.result;
+                selectedImage1.src = e.target.result;
             };
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file1);
         } else {
-            selectedImage.src = "";
+            selectedImage1.src = "";
         }
     }
 
     // Tải lên ảnh lên Firebase Storage
-    function uploadImage() {
-        var fileInput = document.getElementById("fileInput");
-        var file = fileInput.files[0];
+    function uploadImage1() {
+        var fileInput1 = document.getElementById("fileInput1");
+        let file1 = fileInput1.files[0];
 
-        if (!file) {
+        if (!file1) {
             console.error("Vui lòng chọn một tệp để tải lên!");
             return;
         }
 
         // Tham chiếu đến Firebase Storage
-        var storageRef = firebase.storage().ref().child('images/' + file.name);
+        var storageRef = firebase.storage().ref().child('images/' + file1.name);
 
         // Tải lên hình ảnh lên Firebase Storage
-        var uploadTask = storageRef.put(file);
+        var uploadTask = storageRef.put(file1);
 
         uploadTask.on(
             "state_changed",
@@ -362,8 +338,8 @@
                 console.log("Tiến trình tải lên: " + progress + "%");
 
                 // Cập nhật tiến trình tải lên trên giao diện
-                var selectedImage = document.getElementById("selectedImage");
-                selectedImage.style.opacity = 1 - progress / 100;
+                var selectedImage1 = document.getElementById("selectedImage1");
+                selectedImage1.style.opacity = 1 - progress / 100;
             },
             function(error) {
                 console.error("Lỗi khi tải lên hình ảnh:", error);
@@ -374,17 +350,17 @@
                     .getDownloadURL()
                     .then(function(downloadURL) {
                         // Hiển thị liên kết ảnh trên trang web
-                        var uploadedImage = document.getElementById("uploadedImage");
-                        uploadedImage.src = downloadURL;
+                        var uploadedImage1 = document.getElementById("uploadedImage1");
+                        uploadedImage1.src = downloadURL;
 
                         // Hiển thị thông báo thành công và liên kết ảnh
-                        var uploadMessage = document.getElementById("uploadMessage");
-                        uploadMessage.innerHTML = "Upload success! <br> Link: <a href='" + downloadURL + "'>" + downloadURL + "</a>";
-                        document.getElementById("uploadedImage").style.display = "block";
+                        var uploadMessage1 = document.getElementById("uploadMessage1");
+                        uploadMessage1.innerHTML = "Upload success! <br> Link: <a href='" + downloadURL + "'>" + downloadURL + "</a>";
+                        document.getElementById("uploadedImage1").style.display = "block";
 
                         // Xóa ảnh đã chọn và hiển thị liên kết ảnh
-                        var selectedImage = document.getElementById("selectedImage");
-                        selectedImage.src = "";
+                        var selectedImage1 = document.getElementById("selectedImage1");
+                        selectedImage1.src = "";
                     })
                     .catch(function(error) {
                         console.error("Lỗi khi lấy liên kết ảnh:", error);
