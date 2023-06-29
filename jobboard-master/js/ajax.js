@@ -1,6 +1,6 @@
+showListLocation()
 $(document).ready(function () {
     showListJob();
-    showListLocation()
 });
 
 function showListJob() {
