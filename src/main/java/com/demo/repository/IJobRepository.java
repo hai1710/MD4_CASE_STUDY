@@ -25,6 +25,18 @@
         @Query("SELECT j FROM Job j WHERE j.jobType = :jobType AND j.jobLocation.id = :locationId")
         List<Job> searchJobsByJobType(@Param("jobType") String jobType, @Param("locationId") Long locationId);
 
+//        @Query("SELECT j FROM Job j JOIN j.company c WHERE (j.title LIKE %:search% OR c.name LIKE %:search%) AND j.jobType = :jobType")
+//        List<Job> searchJobsBySearchType(@Param("search") String search, @Param("jobType") String jobType);
+//
+//        @Query("SELECT j FROM Job j JOIN j.company c WHERE (j.title LIKE %:search% OR c.name LIKE %:search%) AND j.jobLocation.id = :locationId")
+//        List<Job> searchJobsBySearch(@Param("search") String search, @Param("locationId") Long locationId);
+
+//        @Query("SELECT j FROM Job j JOIN j.company c WHERE j.title LIKE %:search% OR c.name LIKE %:search%")
+//        List<Job> searchJobsByOnlySearch(@Param("search") String search);
+//
+//        @Query("SELECT j FROM Job j WHERE j.jobType = :jobType")
+//        List<Job> searchJobsByOnlyType(@Param("jobType") String jobType);
+
         @Query("SELECT j FROM Job j WHERE j.jobLocation.id = :locationId")
         List<Job> searchJobsByLocationId(@Param("locationId") Long locationId);
     }
