@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/quill.snow.css">
 
+    <script src="checkUser.js"></script>
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -52,15 +53,17 @@
                         <li><a href="index.html" class="nav-link active">Home</a></li>
                         <li><a href="about.html">About</a></li>
                         <li class="has-children">
-                            <a href="job-listings.html" class="active">Job Listings</a>
+                            <a href="job-listings.html">Account</a>
                             <ul class="dropdown">
-                                <li><a href="job-single.html">Job Single</a></li>
-                                <li><a href="post-job.html" class="active">Post a Job</a></li>
+                                <li><a href="info.html">Info</a></li>
+                                <li><a href="company.html">Company</a></li>
+                                <li><a href="job.html">Job</a></li>
                             </ul>
                         </li>
                         <li class="has-children">
                             <a href="services.html">Pages</a>
                             <ul class="dropdown">
+                                <li><a href="blog.html">Blog</a></li>
                                 <li><a href="services.html">Services</a></li>
                                 <li><a href="service-single.html">Service Single</a></li>
                                 <li><a href="blog-single.html">Blog Single</a></li>
@@ -71,7 +74,6 @@
                                 <li><a href="gallery.html">Gallery</a></li>
                             </ul>
                         </li>
-                        <li><a href="blog.html">Blog</a></li>
                         <li><a href="contact.html">Contact</a></li>
                         <li class="d-lg-none"><a href="post-job.html"><span class="mr-2">+</span> Post a Job</a></li>
                         <li class="d-lg-none"><a href="login.html">Log In</a></li>
@@ -80,14 +82,12 @@
 
                 <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                     <div class="ml-auto">
-                        <a href="post-job.html"
-                           class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
-                                class="mr-2 icon-add"></span>Post a Job</a>
-                        <a href="login.html" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
-                                class="mr-2 icon-lock_outline"></span>Log In</a>
+                        <a href="post-job.html" class="btn btn-outline-white border-width-2 d-lg-inline-block">+ Post a Job</a>
+                        <a href="login.html" class="btn btn-primary border-width-2" id="login"><span class="mr-2 icon-lock_outline"></span>Log In</a>
+                        <a href="info.html" class="btn btn-primary border-width-2" id="user"></a>
+                        <button class="btn btn-primary border-width-2 " id="logout" onclick="logout()"><span class="mr-2 icon-lock_outline"></span>Log Out</button>
                     </div>
-                    <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
-                            class="icon-menu h3 m-0 p-0 mt-2"></span></a>
+                    <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span class="icon-menu h3 m-0 p-0 mt-2"></span></a>
                 </div>
 
             </div>
@@ -186,10 +186,15 @@
                         <div class="form-group">
                             <label>Upload Logo</label> <br>
                             <label class="btn btn-primary btn-md btn-file">
-                                Browse File<input type="file" id="fileInput" hidden>
+                                Browse File<input type="file" id="fileInput" hidden onchange="displaySelectedImage()">
                             </label>
                         </div>
-                        <img id="selectedImage" alt="Selected Image" style="display: none; max-width: 500px;">
+                        <img id="selectedImage" alt="Selected Image" style="display: none; max-width: 500px;"><br>
+                        <button id="uploadButton" type="button" class="btn btn-primary btn-md btn-file" onclick="uploadImage()" style="display: none">Upload</button>
+                        <p id="uploadMessage"></p>
+                        <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none; max-width: 500px;">
+
+
 
 
                     </form>
@@ -296,31 +301,98 @@
 <script src="js/bootstrap-select.min.js"></script>
 
 <script src="js/custom.js"></script>
-
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script>
+    // Cấu hình Firebase
+    var firebaseConfig = {
+        apiKey: "AIzaSyBoTj1_SNijRYo4DGugLqnCKWOy2pF7hWk",
+        authDomain: "casemd4-3a742.firebaseapp.com",
+        projectId: "casemd4-3a742",
+        storageBucket: "casemd4-3a742.appspot.com",
+        messagingSenderId: "149528641745",
+        appId: "1:149528641745:web:852427a18e21880305c5f0",
+        measurementId: "G-HKY5QFR16C"
+    };
 
-    var fileInput = document.getElementById("fileInput");
-    var selectedImage = document.getElementById("selectedImage");
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
 
-    fileInput.addEventListener("change", function(event) {
-        var file = event.target.files[0];
-        var reader = new FileReader();
+    // Hiển thị ảnh đã chọn khi chọn file
+    function displaySelectedImage() {
+        var fileInput = document.getElementById("fileInput");
+        var file = fileInput.files[0];
+        var selectedImage = document.getElementById("selectedImage");
+        selectedImage.style.display = "block";
+        document.getElementById("uploadButton").style.display = "block";
 
-        // Kiểm tra kích thước file
-        if (file.size > 5 * 1024 * 1024) {
-            alert("Vui lòng chọn một file có kích thước nhỏ hơn 5MB.");
-            fileInput.value = ""; // Xóa giá trị của trường input file
-            selectedImage.style.display = "none"; // Ẩn hình ảnh
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                selectedImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            selectedImage.src = "";
+        }
+    }
+
+    // Tải lên ảnh lên Firebase Storage
+    function uploadImage() {
+        var fileInput = document.getElementById("fileInput");
+        var file = fileInput.files[0];
+
+        if (!file) {
+            console.error("Vui lòng chọn một tệp để tải lên!");
             return;
         }
 
-        reader.onload = function(e) {
-            selectedImage.src = e.target.result;
-            selectedImage.style.display = "block"; // Hiển thị hình ảnh
-        };
+        // Tham chiếu đến Firebase Storage
+        var storageRef = firebase.storage().ref().child('images/' + file.name);
 
-        reader.readAsDataURL(file);
-    });
+        // Tải lên hình ảnh lên Firebase Storage
+        var uploadTask = storageRef.put(file);
+
+        uploadTask.on(
+            "state_changed",
+            function(snapshot) {
+                // Xử lý tiến trình tải lên
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log("Tiến trình tải lên: " + progress + "%");
+
+                // Cập nhật tiến trình tải lên trên giao diện
+                var selectedImage = document.getElementById("selectedImage");
+                selectedImage.style.opacity = 1 - progress / 100;
+            },
+            function(error) {
+                console.error("Lỗi khi tải lên hình ảnh:", error);
+            },
+            function() {
+                // Hoàn thành tải lên
+                uploadTask.snapshot.ref
+                    .getDownloadURL()
+                    .then(function(downloadURL) {
+                        // Hiển thị liên kết ảnh trên trang web
+                        var uploadedImage = document.getElementById("uploadedImage");
+                        uploadedImage.src = downloadURL;
+
+                        // Hiển thị thông báo thành công và liên kết ảnh
+                        var uploadMessage = document.getElementById("uploadMessage");
+                        uploadMessage.innerHTML = "Upload success! <br> Link: <a href='" + downloadURL + "'>" + downloadURL + "</a>";
+                        document.getElementById("uploadedImage").style.display = "block";
+
+                        // Xóa ảnh đã chọn và hiển thị liên kết ảnh
+                        var selectedImage = document.getElementById("selectedImage");
+                        selectedImage.src = "";
+                    })
+                    .catch(function(error) {
+                        console.error("Lỗi khi lấy liên kết ảnh:", error);
+                    });
+            }
+        );
+    }
 
 </script>
 

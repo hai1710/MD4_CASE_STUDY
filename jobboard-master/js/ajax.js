@@ -1,6 +1,6 @@
+showListLocation();
 $(document).ready(function () {
     showListJob();
-    showListLocation()
 });
 
 function showListJob() {
@@ -12,7 +12,7 @@ function showListJob() {
             let jobList = "";
             for (let i = 0; i < data.length; i++) {
                 jobList += `<li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-            <a href="job-single.html"></a>
+            <a href="job-single.html?id=${data[i].id}"></a>
             <div class="job-listing-logo">
               <img src="${data[i].image}" alt="Free Website Template by Free-Template.co" class="img-fluid">
             </div>
