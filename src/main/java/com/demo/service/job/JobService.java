@@ -56,14 +56,20 @@ public class JobService implements IJobService {
     public List<Job> searchJobs(String search, String jobType, Long locationId) {
         if (search == null && jobType == null && locationId == null) {
             return jobRepository.findAll();
-        } else if (search != null && jobType != null && locationId != null) {
-            return jobRepository.searchJobs(search, jobType, locationId);
-        } else if (jobType != null && locationId != null) {
-            return jobRepository.searchJobsByJobType(jobType, locationId);
-        } else if (locationId != null) {
-            return jobRepository.searchJobsByLocationId(locationId);
-        } else {
-            return jobRepository.findAll();
         }
+        if (search != null && jobType != null && locationId != null) {
+            return jobRepository.searchJobs(search, jobType, locationId);
+        }
+        if (jobType != null && locationId != null) {
+            return jobRepository.searchJobsByJobType(jobType, locationId);
+        }
+        if (locationId != null) {
+            return jobRepository.searchJobsByLocationId(locationId);
+        }
+            return jobRepository.findAll();
     }
+
+//    public List<Job> searchJobs(String title, String jobType, Long locationId) {
+//        return jobRepository.findByTitleContainingIgnoreCaseOrJobTypeIgnoreCaseOrJobLocationId(title, jobType, locationId);
+//    }
 }

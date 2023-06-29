@@ -39,6 +39,7 @@ function showListJob() {
 
 function showListLocation() {
    let listLocation = ``;
+   listLocation = `<option></option>`
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/location",
@@ -47,7 +48,6 @@ function showListLocation() {
             for (let i = 0; i < data.length; i++){
                 listLocation += `<option value="${data[i].id}">${data[i].name}</option>`;
             }
-            listLocation += `</select>`
             console.log(listLocation);
             document.getElementById("test").innerHTML = listLocation
         }
